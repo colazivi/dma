@@ -54,9 +54,6 @@
 const char *
 hostname(void)
 {
-#ifndef HOST_NAME_MAX
-#define HOST_NAME_MAX	255
-#endif
 	static char name[HOST_NAME_MAX+1];
 	static int initialized = 0;
 	char *s;
@@ -348,14 +345,8 @@ init_random(void)
 		close(rf);
 }
 
-void cleanUp(void)
-{
-	deltmp();
-	free_all_auth_entries();
-	free_all_configuration_settings();
-}
-
-void free_auth_details(struct auth_details_t *user_details)
+void
+free_auth_details(struct auth_details_t *user_details)
 {
 	if(user_details == NULL)
 		return;
@@ -366,13 +357,34 @@ void free_auth_details(struct auth_details_t *user_details)
 	free(user_details);
 }
 
-void free_masquerade_settings(struct masquerade_config_t *masquerade)
+void
+free_masquerade_settings(struct masquerade_config_t *masquerade)
 {
 	if(masquerade == NULL)
 		return;
-	if(masquerade->user != NULL)
-		free(masquerade->user);
-	if(masquerade->host != NULL)
-		free(masquerade->host);
+
+	free(masquerade->user);
+	free(masquerade->host);
 	free(masquerade);
+}
+
+/*
+ * Copy of errlog resp errlogx to print a warning in a consistent format.
+ * Since this is supposed to be just a warning, it doesn't exit
+ */
+void
+log_warning(const char *fmt, ...)
+{
+        va_list ap;
+        char outs[ERRMSG_SIZE];
+
+        outs[0] = 0;
+        if (fmt != NULL) {
+                va_start(ap, fmt);
+                vsnprintf(outs, sizeof(outs), fmt, ap);
+                va_end(ap);
+        }
+
+        syslog(LOG_WARNING, "%s", outs);
+        fprintf(stderr, "%s: %s\n", getprogname(), outs);
 }

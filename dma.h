@@ -51,41 +51,44 @@
 
 /* Defaults */
 
-#define BUF_SIZE	2048
-#define ERRMSG_SIZE	1024
-#define USERNAME_SIZE	50
-#define EHLO_RESPONSE_SIZE BUF_SIZE
-#define MIN_RETRY	300				/* 5 minutes */
-#define MAX_RETRY	(3*60*60)		/* retry at least every 3 hours */
-#define MAX_TIMEOUT	(5*24*60*60)	/* give up after 5 days */
-#define SLEEP_TIMEOUT	30			/* check for queue flush every 30 seconds */
+#define BUF_SIZE	        2048
+#define ERRMSG_SIZE	        1024
+#define USERNAME_SIZE	        50
+#define EHLO_RESPONSE_SIZE      BUF_SIZE
+#define MIN_RETRY	        300			/* 5 minutes */
+#define MAX_RETRY	        (3*60*60)		/* retry at least every 3 hours */
+#define MAX_TIMEOUT	        (5*24*60*60)	        /* give up after 5 days */
+#define SLEEP_TIMEOUT	        30			/* check for queue flush every 30 seconds */
 #ifndef PATH_MAX
-#define PATH_MAX	1024			/* Max path len */
+#define PATH_MAX	        1024			/* Max path len */
 #endif
-#define	SMTP_PORT	25				/* Default SMTP port */
-#define SMTP_PORT_STRING			"25" /* as above, as string */
-#define CON_TIMEOUT	(5*60)			/* Connection timeout per RFC5321 */
-#define DEFAULT_ALIASES_PATH		"/etc/aliases"
-#define DEFAULT_SPOOLDIR			"/var/spool/dma"
+#define	SMTP_PORT	        25			/* Default SMTP port */
+#define SMTP_PORT_STRING        "25"                    /* as above, as string */
+#define CON_TIMEOUT	        (5*60)			/* Connection timeout per RFC5321 */
+#define DEFAULT_ALIASES_PATH    "/etc/aliases"
+#define DEFAULT_SPOOLDIR	"/var/spool/dma"
+#ifndef HOST_NAME_MAX
+#define HOST_NAME_MAX           255
+#endif
 
 /* String constants representing the configuration settings */
 
-#define CONF_STARTTLS				"STARTTLS"
-#define CONF_SECURETRANSFER			"SECURETRANSFER"
-#define CONF_DEFER					"DEFER"
-#define CONF_INSECURE				"INSECURE"
-#define CONF_FULLBOUNCE				"FULLBOUNCE"
-#define CONF_NULLCLIENT				"NULLCLIENT"
-#define CONF_TLS_OPP				"OPPORTUNISTIC_TLS"
-#define CONF_FINGERPRINT			"FINGERPRINT"
-#define CONF_MASQUERADE				"MASQUERADE"
-#define CONF_MAILNAME				"MAILNAME"
-#define CONF_CERTFILE				"CERTFILE"
-#define CONF_AUTHPATH				"AUTHPATH"
-#define CONF_SPOOLDIR				"SPOOLDIR"
-#define CONF_ALIASES				"ALIASES"
-#define CONF_PORT					"PORT"
-#define CONF_SMARTHOST				"SMARTHOST"
+#define CONF_STARTTLS		"STARTTLS"
+#define CONF_SECURETRANSFER	"SECURETRANSFER"
+#define CONF_DEFER		"DEFER"
+#define CONF_INSECURE		"INSECURE"
+#define CONF_FULLBOUNCE		"FULLBOUNCE"
+#define CONF_NULLCLIENT		"NULLCLIENT"
+#define CONF_TLS_OPP		"OPPORTUNISTIC_TLS"
+#define CONF_FINGERPRINT	"FINGERPRINT"
+#define CONF_MASQUERADE		"MASQUERADE"
+#define CONF_MAILNAME		"MAILNAME"
+#define CONF_CERTFILE		"CERTFILE"
+#define CONF_AUTHPATH		"AUTHPATH"
+#define CONF_SPOOLDIR		"SPOOLDIR"
+#define CONF_ALIASES		"ALIASES"
+#define CONF_PORT		"PORT"
+#define CONF_SMARTHOST		"SMARTHOST"
 
 #ifndef CONF_PATH
 #error Please define CONF_PATH
@@ -95,17 +98,17 @@
 #error Please define LIBEXEC_PATH
 #endif
 
-#define SPOOL_FLUSHFILE	"flush"
+#define SPOOL_FLUSHFILE         "flush"
 
 #ifndef DMA_ROOT_USER
-#define DMA_ROOT_USER	"mail"
+#define DMA_ROOT_USER   	"mail"
 #endif
 #ifndef DMA_GROUP
-#define DMA_GROUP	"mail"
+#define DMA_GROUP	        "mail"
 #endif
 
 #ifndef MBOX_STRICT
-#define MBOX_STRICT	0
+#define MBOX_STRICT	        0
 #endif
 
 
@@ -177,7 +180,7 @@ extern bool no_ssl_flag;
 extern struct strlist tmpfs;
 extern char username[USERNAME_SIZE];
 extern uid_t useruid;
-extern SSL *ssl_pointer;
+extern SSL *ssl_state;
 extern const char *logident_base;
 
 extern char neterr[ERRMSG_SIZE];
@@ -195,7 +198,6 @@ int auth_parse(void);
 
 /* conf.c */
 /* "Public" functions */
-void free_all_configuration_settings(void);
 struct auth_details_t *get_auth_details_for_host(const char *);
 struct masquerade_config_t *extract_masquerade_settings(const char *);
 const char *get_configuration_value(const char *);
@@ -207,7 +209,6 @@ void initialize_all_configuration_settings(void);
 void trim_line(char *);
 int try_to_set_configuration_setting(char *, char *);
 int add_auth_entry(char *, char *, char *);
-void free_all_auth_entries(void);
 
 /* conf_parse.y */
 extern FILE *conf_in;
@@ -263,6 +264,7 @@ void errlog(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)
 void errlogx(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)));
 void free_auth_details(struct auth_details_t *);
 void free_masquerade_settings(struct masquerade_config_t *);
+void log_warning(const char *fmt, ...) __attribute__((__format__ (__printf__, 1, 2)));;
 void set_username(void);
 void deltmp(void);
 int do_timeout(int, int);
@@ -270,6 +272,5 @@ int open_locked(const char *, int, ...);
 char *rfc822date(void);
 int strprefixcmp(const char *, const char *);
 void init_random(void);
-void cleanUp(void);
 
 #endif
