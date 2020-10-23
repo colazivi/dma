@@ -10,3 +10,7 @@ auth_parse.h
 conf_parse.c
 conf_parse.h
 conf_scan.c
+/.vs
+/out/build
+/bsd.clang-format
+/CMakeSettings.json

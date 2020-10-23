@@ -1,4 +1,4 @@
-#ifndef HAVE_STRLCPY
+#ifdef USE_COMPAT_BSDFUNCTIONS
 
 /*
  * Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>
@@ -56,9 +56,6 @@ strlcpy(char *dst, const char *src, size_t siz)
 	return(s - src - 1);	/* count does not include NUL */
 }
 
-#endif /* !HAVE_STRLCPY */
-
-#ifndef HAVE_REALLOCF
 
 /*-
  * Copyright (c) 1998, M. Warner Losh <imp@freebsd.org>
@@ -101,11 +98,11 @@ reallocf(void *ptr, size_t size)
 	return (nptr);
 }
 
-#endif /* !HAVE_REALLOCF */
 
-#ifndef HAVE_GETPROGNAME
 
 #ifdef __GLIBC__
+
+#define _GNU_SOURCE
 
 #include <errno.h>
 
@@ -119,4 +116,4 @@ getprogname(void)
 #error "no getprogname implementation available"
 #endif
 
-#endif /* !HAVE_GETPROGNAME */
+#endif /* USE_COMPAT_BSDFUNCTIONS */

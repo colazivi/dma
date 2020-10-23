@@ -42,6 +42,7 @@
 #include <netdb.h>
 #include <resolv.h>
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 
 #include "dma.h"

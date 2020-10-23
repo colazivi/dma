@@ -34,8 +34,6 @@
  * SUCH DAMAGE.
  */
 
-#include "dfcompat.h"
-
 #include <sys/param.h>
 #include <sys/queue.h>
 #include <sys/stat.h>

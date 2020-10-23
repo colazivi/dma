@@ -37,6 +37,10 @@
 #ifndef DMA_H
 #define DMA_H
 
+#if defined(USE_COMPAT_BSDFUNCTIONS) || (NEED_ROUNDUP_COMPAT)
+#include "dfcompat.h"
+#endif
+
 #include <sys/types.h>
 #include <sys/queue.h>
 #include <sys/socket.h>
@@ -44,8 +48,10 @@
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
 #include <netdb.h>
-#include <sysexits.h>
 #include <stdbool.h>
+#include <stdnoreturn.h>
+#include <sysexits.h>
+
 
 #define VERSION	"DragonFly Mail Agent " DMA_VERSION
 
@@ -247,7 +253,7 @@ int load_queue(struct queue *);
 void delqueue(struct qitem *);
 int acquirespool(struct qitem *);
 void dropspool(struct queue *, struct qitem *);
-int flushqueue_since(unsigned int);
+int flushqueue_since(time_t);
 int flushqueue_signal(void);
 
 /* local.c */
@@ -260,11 +266,11 @@ int readmail(struct queue *, int, int);
 /* util.c */
 const char *hostname(void);
 void setlogident(const char *, ...) __attribute__((__format__ (__printf__, 1, 2)));
-void errlog(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)));
-void errlogx(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)));
+noreturn void errlog(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)));
+noreturn void errlogx(int, const char *, ...) __attribute__((__format__ (__printf__, 2, 3)));
 void free_auth_details(struct auth_details_t *);
 void free_masquerade_settings(struct masquerade_config_t *);
-void log_warning(const char *fmt, ...) __attribute__((__format__ (__printf__, 1, 2)));;
+void log_warning(const char *fmt, ...) __attribute__((__format__ (__printf__, 1, 2)));
 void set_username(void);
 void deltmp(void);
 int do_timeout(int, int);

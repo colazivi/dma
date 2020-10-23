@@ -33,7 +33,7 @@
  * SUCH DAMAGE.
  */
 
-#include "dfcompat.h"
+#define _GNU_SOURCE /* for asprintf() */
 
 #include <sys/param.h>
 #include <sys/types.h>
@@ -55,6 +55,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <syslog.h>
 #include <unistd.h>
 
@@ -316,7 +317,7 @@ static void
 deliver(struct qitem *it)
 {
 	int error;
-	unsigned int backoff = MIN_RETRY, slept;
+	time_t backoff = MIN_RETRY, slept;
 	struct timeval now;
 	struct stat st;
 
@@ -462,6 +463,7 @@ main(int argc, char **argv)
 	LIST_INIT(&queue.queue);
 
 	own_name = basename(argv[0]);
+        parse_conf(CONF_PATH "/dma.conf");
 
 	if (strcmp(own_name, "mailq") == 0) {
 		argv++; argc--;
@@ -577,8 +579,6 @@ skipopts:
 	sigemptyset(&act.sa_mask);
 	if (sigaction(SIGHUP, &act, NULL) != 0)
 		syslog(LOG_WARNING, "can not set signal handler: %m");
-
-	parse_conf(CONF_PATH "/dma.conf");
 
 	if (is_configuration_setting_enabled(CONF_AUTHPATH))
 		parse_authfile(get_configuration_value(CONF_AUTHPATH));

@@ -54,7 +54,7 @@
 #include "dma.h"
 
 
-static void
+noreturn static void
 logfail(int exitcode, const char *fmt, ...)
 {
 	int oerrno = errno;

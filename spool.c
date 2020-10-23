@@ -33,7 +33,7 @@
  * SUCH DAMAGE.
  */
 
-#include "dfcompat.h"
+#define _GNU_SOURCE /* for asprintf() */
 
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -403,7 +403,7 @@ dropspool(struct queue *queue, struct qitem *keep)
 }
 
 int
-flushqueue_since(unsigned int period)
+flushqueue_since(time_t period)
 {
         struct stat st;
 	struct timeval now;

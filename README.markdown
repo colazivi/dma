@@ -15,18 +15,20 @@ incoming connections.
 Building
 --------
 
-In Linux:
-
-	make
-
-In BSD:
-
-	cd bsd && make
+mkdir build && cd build
+cmake ..
+make
 
 Installation
 ------------
 
-	make install sendmail-link mailq-link install-spool-dirs install-etc
+	make install
+	
+	If traditional sendmail links are desired (beware of existing mailwrapper or update-alternatives configurations!):
+	make sendmail-link mailq-link
+
+	If the directories in /var are missing:
+	make install-spool-dirs
 
 See INSTALL for requirements and configuration options.
 
