@@ -272,11 +272,6 @@ err:
 
 	*he = hosts;
 	return (err);
-
-	free(ans);
-	if (hosts != NULL)
-		free(hosts);
-	return (err);
 }
 
 #if defined(TESTING)

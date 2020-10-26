@@ -162,6 +162,10 @@ smtp_init_crypto(int fd, struct smtp_features* features)
 					return (0);
 				}
 			}
+		} else {
+			syslog(LOG_ERR, "remote delivery deferred: could not perform server greeting: %s",
+				neterr);
+			return (1);
 		}
 
 		/* End of TLS init phase, enable SSL_write/read */
