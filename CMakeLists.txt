@@ -26,7 +26,7 @@ if(NOT DEFINED ENV{MAIL_GROUP})
 			message(CHECK_FAIL "not found")
 			message(FATAL_ERROR "Neither \"${BINGROUP}\" nor \"mailnull\" exists. Aborting.\n"
 					"Consider creating a new group and supplying it by running:\n"
-					"shell$ MAIL_GROUP=newgroup cmake ..")
+					"shell$$ MAIL_GROUP=newgroup cmake ..")
 		endif()
 		message(CHECK_PASS "found")
 		list(POP_BACK CMAKE_MESSAGE_INDENT)
@@ -59,7 +59,7 @@ if(NOT DEFINED ENV{MAIL_USER})
 			message(CHECK_FAIL "not found")
 			message(FATAL_ERROR "Neither \"${DMA_MAIL_USER}\" nor \"mailnull\" exists. Aborting.\n"
 					"Consider creating a username and supplying it by running:\n"
-					"shell$ MAIL_USER=newusername cmake ..")
+					"shell$$ MAIL_USER=newusername cmake ..")
 		endif()
 		message(CHECK_PASS "found")
 		list(POP_BACK CMAKE_MESSAGE_INDENT)
